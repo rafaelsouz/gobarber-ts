@@ -10,9 +10,9 @@ import api from '../services/api';
 
 interface User {
   id: string;
-  avatar_url: string;
   name: string;
   email: string;
+  avatar_url: string;
 }
 
 interface AuthState {
@@ -27,6 +27,7 @@ interface SignInCredentials {
 
 interface AuthContextDATA {
   user: User;
+  loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   updateUser(user: User): void;
@@ -36,6 +37,7 @@ const AuthContext = createContext<AuthContextDATA>({} as AuthContextDATA);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
@@ -45,8 +47,10 @@ const AuthProvider: React.FC = ({ children }) => {
       ]);
 
       if (token[1] && user[1]) {
+        api.defaults.headers.authorization = `Bearer ${token[1]}`;
         setData({ token: token[1], user: JSON.parse(user[1]) });
       }
+      setLoading(false);
     }
     loadStorageData();
   }, []);
@@ -89,7 +93,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: data.user, signIn, signOut, updateUser }}
+      value={{ user: data.user, signIn, signOut, updateUser, loading }}
     >
       {children}
     </AuthContext.Provider>
