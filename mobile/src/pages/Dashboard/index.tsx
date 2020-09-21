@@ -36,9 +36,14 @@ const Dashboard: React.FC = () => {
   console.log(user);
 
   useEffect(() => {
-    api.get('providers').then(response => {
-      setProviders(response.data);
-    });
+    api
+      .get('providers')
+      .then(response => {
+        setProviders(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
 
   const navigateToProfile = useCallback(() => {
