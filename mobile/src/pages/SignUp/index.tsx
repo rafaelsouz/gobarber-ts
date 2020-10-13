@@ -26,18 +26,18 @@ import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
 
 import logoImg from '../../assets/logo.png';
 
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const SignUp: React.FC = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
-
-  interface SignUpFormData {
-    name: string;
-    email: string;
-    password: string;
-  }
 
   const handleSignUp = useCallback(
     async (data: SignUpFormData) => {

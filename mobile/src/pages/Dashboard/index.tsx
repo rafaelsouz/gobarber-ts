@@ -33,8 +33,6 @@ const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
   const { navigate } = useNavigation();
 
-  console.log(user);
-
   useEffect(() => {
     api
       .get('providers')
